@@ -2,14 +2,17 @@ class Api::V1::MoviesController < ApplicationController
     def index
         conn = Faraday.new(url: "https://api.themoviedb.org") do |faraday|
             faraday.headers['Authorization']= "Bearer #{Rails.application.credentials.tmdb[:token]}"
-        end
+             end
 
-        response = conn.get("/3/movie/top_rated")
+        if params[:query].present?
 
-        # response = conn.get("/3/movie/top_rated", {api_key: Rails.application.credentials.tmdb[:key]})
+            response = conn.get("/3/search/movie?query=#{params[:query]}")
         
+        else
+        response = conn.get("/3/movie/top_rated")
+        end
         json = JSON.parse(response.body, symbolize_names: true)
-        #require 'pry';binding.pry
+    
         full_data = json[:results].map do |movie|
             {
             "id": (movie[:id]).to_s,
@@ -20,7 +23,7 @@ class Api::V1::MoviesController < ApplicationController
             }
             }
         end
-        #require 'pry';binding.pry
+        
         render json: {data: full_data}
     end
 end
