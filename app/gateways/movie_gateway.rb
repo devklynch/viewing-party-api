@@ -15,4 +15,19 @@ class MovieGateway
         response = conn.get("/3/movie/top_rated")
         JSON.parse(response.body, symbolize_names: true)
     end
+
+    def self.movie_details(movie_id)
+        response = conn.get("/3/movie/#{movie_id}")
+        JSON.parse(response.body, symbolize_names: true)
+    end
+
+    def self.movie_credits(movie_id)
+        response = conn.get("/3/movie/#{movie_id}/credits")
+        JSON.parse(response.body, symbolize_names: true)
+    end
+
+    def self.movie_reviews(movie_id)
+        response = conn.get("/3/movie/#{movie_id}/reviews")
+        JSON.parse(response.body, symbolize_names: true)
+    end
 end
