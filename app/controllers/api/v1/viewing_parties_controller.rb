@@ -16,6 +16,15 @@ class Api::V1::ViewingPartiesController < ApplicationController
         render json: ViewingPartySerializer.format_viewing_party(viewing_party)
     end
 
+    def update
+        viewing_party = ViewingParty.find(params[:id])
+        new_invitee = User.find(params[:invitees_user_id])
+
+        Attendee.create!(viewing_party: viewing_party, user: new_invitee, is_host: false)
+
+        render json: ViewingPartySerializer.format_viewing_party(viewing_party)
+    end
+
     private
 
     def party_params
