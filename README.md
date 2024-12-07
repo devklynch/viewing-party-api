@@ -15,3 +15,7 @@ Viewing Party is an application that allows users to explore movies and create a
 Spend some time familiarizing yourself with the functionality and structure of the application so far.
 
 Run the application and test out some endpoints: `rails s`
+
+Routes
+Top Rated Movies-returns top 20 rated movies
+http://localhost:3000/api/v1/movies
