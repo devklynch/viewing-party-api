@@ -6,13 +6,6 @@ class ErrorSerializer
     }
   end
 
-  # def self.record_invalid(error_message)
-  #   {
-  #     message: error_message.message,
-  #     status: error_message.status_code
-  #   }
-  # end
-
   def self.format_errors(messages)
     {
       message: 'Your query could not be completed',

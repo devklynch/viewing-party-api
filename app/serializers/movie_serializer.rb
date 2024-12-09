@@ -1,6 +1,5 @@
 class MovieSerializer
     include JSONAPI::Serializer
-    attributes :title, :vote_average
   
     def self.format_movie_list(movies)
       { data:
@@ -34,7 +33,6 @@ class MovieSerializer
                     reviews: movie.reviews
                 }
             }
-
         }
     end
   end

@@ -18,7 +18,6 @@ class UserSerializer
   end
 
   def self.format_user_details(user)
-    #binding.pry
     { data: {
       id: user.id,
       type: "user",
@@ -29,14 +28,11 @@ class UserSerializer
         viewing_parties_invited: display_viewing_parties(user.viewing_parties.where(attendees: {is_host: false}))
       }
     }
-      
   }
-
   end
 
   def self.display_viewing_parties(events)
     events.map do |event|
-      #binding.pry
       {
         id: event.id,
         name: event.name,
@@ -46,7 +42,6 @@ class UserSerializer
         movie_title: event.movie_title,
         host_id: Attendee.where(viewing_party: event, is_host: true).pluck(:user_id).first
       }
-
     end
   end
 end

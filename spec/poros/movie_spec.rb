@@ -11,7 +11,6 @@ RSpec.describe Movie do
        
         movie_info = Movie.new(details_parse,credits_parse,reviews_parse)
 
-        #binding.pry
         expect(movie_info.id).to eq("98")
         expect(movie_info.title).to eq("Gladiator")
         expect(movie_info.release_year).to eq(2000)

@@ -21,22 +21,22 @@ RSpec.describe "Viewing Party" do
         post "/api/v1/viewing_parties/#{@user1.id}", params: party_params
 
         json_response = JSON.parse(response.body, symbolize_names: true)
-            #binding.pry
-            expect(response).to be_successful
-            expect(json_response).to be_a(Hash)
-            expect(json_response).to have_key(:data)
-            expect(json_response[:data]).to have_key(:id)
-            expect(json_response[:data]).to have_key(:type)
-            expect(json_response[:data]).to have_key(:attributes)
-            expect(json_response[:data][:attributes]).to have_key(:name)
-            expect(json_response[:data][:attributes]).to have_key(:start_time)
-            expect(json_response[:data][:attributes]).to have_key(:end_time)
-            expect(json_response[:data][:attributes][:name]).to eq(party_params[:name])
-            expect(json_response[:data][:attributes][:movie_id]).to eq(party_params[:movie_id])
-            expect(json_response[:data][:attributes][:movie_title]).to eq(party_params[:movie_title])
-            expect(json_response[:data][:attributes][:attendees][0][:id]).to eq(@user1.id)
-            expect(json_response[:data][:attributes][:attendees][1][:id]).to eq(@user.id)
-            expect(json_response[:data][:attributes][:attendees][2][:id]).to eq(@user2.id)
+        
+        expect(response).to be_successful
+        expect(json_response).to be_a(Hash)
+        expect(json_response).to have_key(:data)
+        expect(json_response[:data]).to have_key(:id)
+        expect(json_response[:data]).to have_key(:type)
+        expect(json_response[:data]).to have_key(:attributes)
+        expect(json_response[:data][:attributes]).to have_key(:name)
+        expect(json_response[:data][:attributes]).to have_key(:start_time)
+        expect(json_response[:data][:attributes]).to have_key(:end_time)
+        expect(json_response[:data][:attributes][:name]).to eq(party_params[:name])
+        expect(json_response[:data][:attributes][:movie_id]).to eq(party_params[:movie_id])
+        expect(json_response[:data][:attributes][:movie_title]).to eq(party_params[:movie_title])
+        expect(json_response[:data][:attributes][:attendees][0][:id]).to eq(@user1.id)
+        expect(json_response[:data][:attributes][:attendees][1][:id]).to eq(@user.id)
+        expect(json_response[:data][:attributes][:attendees][2][:id]).to eq(@user2.id)
         end
 
         it "can't create a viewing_party without required fields" do
@@ -64,9 +64,9 @@ RSpec.describe "Viewing Party" do
                 invitees: [@user.id,@user2.id]
             }
             post "/api/v1/viewing_parties/#{@user1.id}", params: party_params
-    
+
             json_response = JSON.parse(response.body, symbolize_names: true)
-            #binding.pry
+            
             expect(json_response[:errors]).to eq(["Validation failed: Event cannot be shorter than the movie"])
         end
 
@@ -80,9 +80,9 @@ RSpec.describe "Viewing Party" do
                 invitees: [@user.id,@user2.id]
             }
             post "/api/v1/viewing_parties/#{@user1.id}", params: party_params
-    
+
             json_response = JSON.parse(response.body, symbolize_names: true)
-            #binding.pry
+
             expect(json_response[:errors]).to eq( ["Validation failed: Event cannot be shorter than the movie, End time cannot be before start time"])
         end
 
@@ -96,48 +96,46 @@ RSpec.describe "Viewing Party" do
                 invitees: [@user.id,@user2.id]
             }
             post "/api/v1/viewing_parties/#{@user1.id}", params: party_params
-    
+
             json_response = JSON.parse(response.body, symbolize_names: true)
-            #binding.pry
+            
             expect(json_response[:errors]).to eq( ["Validation failed: Start time can't be blank, Start and End Time must be valid"])
         end
-
-
-
+    end
     describe "post new invitees" do
-            it "can add new invitees" do
-                party_params = {
-                    name: "Test 6",
-                    start_time: "2025-02-02 10:30:00",
-                    end_time: "2025-02-02 14:30:00",
-                    movie_id: 278,
-                    movie_title: "The Shawshank Redemption",
-                    invitees: [@user.id,@user2.id]
-                }
-                post "/api/v1/viewing_parties/#{@user1.id}", params: party_params
-                party_response = JSON.parse(response.body, symbolize_names: true)
-                viewing_party_id = party_response[:data][:id]
-                #binding.pry
-                invitee_param = {
-                    invitees_user_id: @user3.id
+        it "can add new invitees" do
+            party_params = {
+                name: "Test 6",
+                start_time: "2025-02-02 10:30:00",
+                end_time: "2025-02-02 14:30:00",
+                movie_id: 278,
+                movie_title: "The Shawshank Redemption",
+                invitees: [@user.id,@user2.id]
+            }
+            post "/api/v1/viewing_parties/#{@user1.id}", params: party_params
+            party_response = JSON.parse(response.body, symbolize_names: true)
+            viewing_party_id = party_response[:data][:id]
+         
+            invitee_param = {
+                invitees_user_id: @user3.id
             }.to_json
-                #binding.pry
-                post "/api/v1/viewing_parties/add_attendee/#{viewing_party_id}", params: invitee_param, headers: {'CONTENT_TYPE' => 'application/json'}
+         
+            post "/api/v1/viewing_parties/add_attendee/#{viewing_party_id}", params: invitee_param, headers: {'CONTENT_TYPE' => 'application/json'}
 
-                json_response = JSON.parse(response.body, symbolize_names: true)
-                #binding.pry
-                expect(response).to be_successful
-                expect(json_response[:data][:attributes][:attendees][-1][:id]).to eq(@user3.id)
-                expect(json_response[:data][:attributes][:attendees][-1][:name]).to eq(@user3.name)
-                expect(json_response[:data][:attributes][:attendees][-1][:username]).to eq(@user3.username)
-                expect(json_response[:data][:attributes][:attendees][-1][:is_host]).to eq(false)
+            json_response = JSON.parse(response.body, symbolize_names: true)
+           
+            expect(response).to be_successful
+            expect(json_response[:data][:attributes][:attendees][-1][:id]).to eq(@user3.id)
+            expect(json_response[:data][:attributes][:attendees][-1][:name]).to eq(@user3.name)
+            expect(json_response[:data][:attributes][:attendees][-1][:username]).to eq(@user3.username)
+            expect(json_response[:data][:attributes][:attendees][-1][:is_host]).to eq(false)
         end
 
         it "cannot add invitees to an invalid viewing party" do
             invitee_param = {
                     invitees_user_id: @user3.id
             }.to_json
-                #binding.pry
+             
                 post "/api/v1/viewing_parties/add_attendee/999999999999", params: invitee_param, headers: {'CONTENT_TYPE' => 'application/json'}
                 json_response = JSON.parse(response.body, symbolize_names: true)
 
@@ -153,22 +151,19 @@ RSpec.describe "Viewing Party" do
                     movie_title: "The Shawshank Redemption",
                     invitees: [@user.id,@user2.id]
                 }
-                post "/api/v1/viewing_parties/#{@user1.id}", params: party_params
+            post "/api/v1/viewing_parties/#{@user1.id}", params: party_params
 
-                party_response = JSON.parse(response.body, symbolize_names: true)
+            party_response = JSON.parse(response.body, symbolize_names: true)
 
-                viewing_party_id = party_response[:data][:id]
-                invitee_param = {
-                    invitees_user_id: [1934328947329847329842]
+            viewing_party_id = party_response[:data][:id]
+            invitee_param = {
+                invitees_user_id: [1934328947329847329842]
             }.to_json
 
+            post "/api/v1/viewing_parties/add_attendee/#{viewing_party_id}", params: invitee_param, headers: {'CONTENT_TYPE' => 'application/json'}
 
-                post "/api/v1/viewing_parties/add_attendee/#{viewing_party_id}", params: invitee_param, headers: {'CONTENT_TYPE' => 'application/json'}
-
-                json_response = JSON.parse(response.body, symbolize_names: true)
-                expect(json_response[:errors]).to eq(["Couldn't find User with 'id'=1934328947329847329842"])
+            json_response = JSON.parse(response.body, symbolize_names: true)
+            expect(json_response[:errors]).to eq(["Couldn't find User with 'id'=1934328947329847329842"])
         end
     end
-    end
-
 end
