@@ -29,14 +29,22 @@ class Api::V1::ViewingPartiesController < ApplicationController
 
     def create_attendees(invitees,viewing_party)
         if invitees.is_a?(Integer)
+            unless attendee_check(invitees,viewing_party)
             invitee = User.find(invitees)
             Attendee.create!(viewing_party: viewing_party, user: invitee, is_host: false)
+            end
         else
             invitees.each do |invitee_id|
+                unless attendee_check(invitee_id,viewing_party)
                 invitee = User.find(invitee_id)
                 Attendee.create!(viewing_party: viewing_party, user: invitee, is_host: false)
+                end
             end
         end
+    end
+
+    def attendee_check(invitee_id,viewing_party)
+        Attendee.exists?(viewing_party: viewing_party, user_id: invitee_id)
     end
 
 end
