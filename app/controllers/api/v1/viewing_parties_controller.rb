@@ -8,10 +8,6 @@ class Api::V1::ViewingPartiesController < ApplicationController
         Attendee.create!(viewing_party: viewing_party, user: host, is_host: true)
 
         create_attendees(invitees,viewing_party)
-        #create attendees none host
-        # invitees.each do |invitee_id|
-        #     invitee = User.find(invitee_id)
-        #     Attendee.create!(viewing_party: viewing_party, user: invitee, is_host: false)
         
         render json: ViewingPartySerializer.format_viewing_party(viewing_party)
     end

@@ -12,7 +12,6 @@ Rails.application.routes.draw do
       resources :users, only: [:create, :index, :show]
       resources :sessions, only: :create
       resources :movies, only: [:index, :show]
-      #resources :viewing_parties, only: :update
 
       post "viewing_parties/:user_id", to: "viewing_parties#create"
       post "viewing_parties/add_attendee/:id", to: "viewing_parties#update"

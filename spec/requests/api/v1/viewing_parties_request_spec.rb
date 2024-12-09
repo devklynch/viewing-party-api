@@ -132,6 +132,42 @@ RSpec.describe "Viewing Party" do
                 expect(json_response[:data][:attributes][:attendees][-1][:username]).to eq(@user3.username)
                 expect(json_response[:data][:attributes][:attendees][-1][:is_host]).to eq(false)
         end
+
+        it "cannot add invitees to an invalid viewing party" do
+            invitee_param = {
+                    invitees_user_id: @user3.id
+            }.to_json
+                #binding.pry
+                post "/api/v1/viewing_parties/add_attendee/999999999999", params: invitee_param, headers: {'CONTENT_TYPE' => 'application/json'}
+                json_response = JSON.parse(response.body, symbolize_names: true)
+
+                expect(json_response[:errors]).to eq(["Couldn't find ViewingParty with 'id'=999999999999"])
+        end
+
+        it "cannot add invitees with an invalid user id" do
+            party_params = {
+                    name: "Test 6",
+                    start_time: "2025-02-02 10:30:00",
+                    end_time: "2025-02-02 14:30:00",
+                    movie_id: 278,
+                    movie_title: "The Shawshank Redemption",
+                    invitees: [@user.id,@user2.id]
+                }
+                post "/api/v1/viewing_parties/#{@user1.id}", params: party_params
+
+                party_response = JSON.parse(response.body, symbolize_names: true)
+
+                viewing_party_id = party_response[:data][:id]
+                invitee_param = {
+                    invitees_user_id: [1934328947329847329842]
+            }.to_json
+
+
+                post "/api/v1/viewing_parties/add_attendee/#{viewing_party_id}", params: invitee_param, headers: {'CONTENT_TYPE' => 'application/json'}
+
+                json_response = JSON.parse(response.body, symbolize_names: true)
+                expect(json_response[:errors]).to eq(["Couldn't find User with 'id'=1934328947329847329842"])
+        end
     end
     end
 
