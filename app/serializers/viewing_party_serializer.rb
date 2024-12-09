@@ -19,8 +19,6 @@ class ViewingPartySerializer
                     }
                 end
             }
-
         }}
     end
-
 end

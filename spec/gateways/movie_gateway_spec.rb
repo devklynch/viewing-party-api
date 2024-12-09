@@ -6,7 +6,7 @@ RSpec.describe MovieGateway do
             response_hash = MovieGateway.movie_search("Lord of the Rings")
 
             first_result = response_hash[:results][0]
-            #binding.pry
+         
             expect(response_hash).to be_a(Hash)
             expect(response_hash).to have_key(:results)
             expect(response_hash).to_not have_key(:errors)
@@ -31,7 +31,7 @@ RSpec.describe MovieGateway do
     describe "movie details gateways" do
         it "calls TMDB to get movie_details" do
             response_hash = MovieGateway.movie_details(98)
-            #binding.pry
+           
             expect(response_hash).to be_a(Hash)
             expect(response_hash).to_not have_key(:errors)
             expect(response_hash).to have_key(:id)

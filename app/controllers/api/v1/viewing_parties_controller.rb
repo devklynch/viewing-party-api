@@ -15,11 +15,9 @@ class Api::V1::ViewingPartiesController < ApplicationController
     def update
         viewing_party = ViewingParty.find(params[:id])
         new_invitees = params[:invitees_user_id]
-        #binding.pry
+      
         create_attendees(new_invitees,viewing_party)
    
-        # Attendee.create!(viewing_party: viewing_party, user: new_invitee, is_host: false)
-
         render json: ViewingPartySerializer.format_viewing_party(viewing_party)
     end
 
@@ -30,9 +28,7 @@ class Api::V1::ViewingPartiesController < ApplicationController
     end
 
     def create_attendees(invitees,viewing_party)
-        #binding.pry
         if invitees.is_a?(Integer)
-            #binding.pry
             invitee = User.find(invitees)
             Attendee.create!(viewing_party: viewing_party, user: invitee, is_host: false)
         else

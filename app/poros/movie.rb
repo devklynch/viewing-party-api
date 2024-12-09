@@ -11,20 +11,16 @@ class Movie
                 :reviews
 
     def initialize(details,credits,reviews)
-            #binding.pry
             @id = details[:id].to_s
             @title = details[:title]
             @release_year = details[:release_date][0..3].to_i
             @vote_average = details[:vote_average]
             @runtime = get_runtime(details[:runtime])
-            @genres = details[:genres].map do |genre|
-                genre[:name]
-            end
+            @genres = get_genres(details[:genres])
             @summary = details[:overview]
             @cast = get_cast(credits[:cast])
             @total_reviews = reviews[:total_results]
             @reviews = get_reviews(reviews[:results])
-        
     end
 
     def get_cast(cast)
@@ -45,13 +41,18 @@ class Movie
             review: review[:content]
         }
         end
-
     end
 
     def get_runtime(minutes)
         hours = minutes/60
         minutes = minutes%60
         "#{hours} hours, #{minutes} minutes"
+    end
+
+    def get_genres(genres)
+        genres.map do |genre|
+            genre[:name]
+        end
     end
 
 end

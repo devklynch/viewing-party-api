@@ -20,7 +20,7 @@ RSpec.describe ViewingParty, type: :model do
                 end_time: "2025-02-03 01:40:00",
                 movie_id: 278,
                 movie_title: "The Shawshank Redemption" )
-            #binding.pry
+      
             expect(viewing_party.valid?).to eq(false)
             expect(viewing_party.errors[:base]).to eq(["Event cannot be shorter than the movie"])
         end
@@ -52,5 +52,4 @@ RSpec.describe ViewingParty, type: :model do
             expect(viewing_party.errors[:base]).to eq(["Start and End Time must be valid"])
         end
     end
-
 end

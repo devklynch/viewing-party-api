@@ -8,7 +8,7 @@ RSpec.describe "Movies API" do
                 get "/api/v1/movies"
 
                 json = JSON.parse(response.body, symbolize_names: true)
-                #binding.pry
+                
                 first_result = json[:data][0]
                 expect(response).to be_successful
                 expect(json[:data].count).to eq(20)
@@ -23,9 +23,10 @@ RSpec.describe "Movies API" do
 
         it "returns movies when searching" do
             VCR.use_cassette("movie_search_lotr") do
+
                 get "/api/v1/movies?query=lord%20of%20the%20rings"
+
                 json = JSON.parse(response.body, symbolize_names: true)
-                #binding.pry
 
                 expect(response).to be_successful
                 first_result = json[:data][0]
@@ -44,10 +45,12 @@ RSpec.describe "Movies API" do
     describe "Get movie details endpoint" do
         it "returns movie details by movie_id" do
             VCR.use_cassette("movie_details_gladiator") do
+
                 get "/api/v1/movies/98"
+
                 json = JSON.parse(response.body, symbolize_names: true)
                 json_attributes = json[:data][:attributes]
-                #binding.pry
+             
                 expect(response).to be_successful
                 expect(json[:data][:id]).to eq("98")
                 expect(json[:data][:type]).to eq("movie")
@@ -65,7 +68,6 @@ RSpec.describe "Movies API" do
                 expect(json_attributes[:reviews]).to be_a(Array)
                 expect(json_attributes[:reviews][0]).to have_key(:author)
                 expect(json_attributes[:reviews][0]).to have_key(:review)
-
             end
         end
     end
