@@ -7,7 +7,7 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-@user1=User.create!(name: "Danny DeVito", username: "danny_de_v4", password: "jerseyMikesRox7")
+@user1=User.create!(name: "Courtney ", username: "danny_de_v4", password: "jerseyMikesRox7")
 @user2=User.create!(name: "Dolly Parton", username: "dollyP4", password: "Jolene123")
 @user3=User.create!(name: "Lionel Messi", username: "futbol_geek4", password: "test123")
 
